@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12
+
+    commands:
+      - cd services/hello-service/
+      - npm install
+      - npm install -g serverless@1.26.1
+  build:
+    commands:
+      #- npm run test
+      - serverless deploy -s $STAGE
+cache:
+  paths:
+    - '.serverless/*'

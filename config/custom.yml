@@ -3,19 +3,23 @@ enabled:
   dev: true
   staging: true
   prod: true
+  
 environment:
   dev: staging
   staging: staging
   prod: production
+
 domains:
-  dev: api.dev.domain.com
-  staging: api.staging.domain.com
-  prod: api.domain.com
+  dev: api.dev.upacaipalmas.com
+  staging: api.staging.upacaipalmas.com
+  prod: api.upacaipalmas.com
+
 customDomain:
-  basePath: YOUR_BASE_PATH
+  basePath: hello
   domainName: ${self:custom.domains.${self:custom.stage}}
   stage: "${self:custom.stage}"
   createRoute53Record: true
+
 webpack:
   keepOutputDirectory: true
   includeModules: true

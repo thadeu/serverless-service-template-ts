@@ -1,0 +1,4 @@
+Conditions:
+  EnvStaging : {"Fn::Equals" : [ "${self:custom.stage}", "staging"]}
+  EnvProd : {"Fn::Equals" : [ "${self:custom.stage}", "prod"]}
+  CreateResource: {"Fn::Or": [{"Condition": "EnvStaging"}, {"Condition": "EnvProd" }]}

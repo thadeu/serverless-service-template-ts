@@ -1,0 +1,42 @@
+hello-world:
+  handler: src/hello-world/handler.handler
+  description: DESCRIPTION YOUR TEMPLATE
+  memorySize: 128
+  timeout: 60
+  tracing: true
+  events:
+    - http:
+        path: /
+        method: GET
+        private: true
+        cors:
+          allowCredentials: false
+          origin: '*'
+          headers:
+            - '*'
+        
+  # alarms:
+  #   - functionDuration
+  #   - name: functionDuration
+  #     description: ${self:service}-${self:custom.stage}-hello-world Lambda Timeout - WARNING
+  #     threshold: 60000
+  #   - functionErrors
+  #   - name: functionErrors 
+  #     description: ${self:service}-${self:custom.stage}-hello-world Lambda Error - ERROR
+  #   - functionThrottles
+  #   - name: functionThrottles 
+  #     description: ${self:service}-${self:custom.stage}-hello-world Lambda Throttle - ERROR
+
+  iamRoleStatementsName: hello-world-${self:custom.stage}-lambdaRole
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 
+        - "arn:aws:dynamodb:us-east-1:*:*"

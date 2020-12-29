@@ -1,72 +1,67 @@
-Conditions:
-  EnvStaging : {"Fn::Equals" : [ "${self:custom.stage}", "staging"]}
-  EnvProd : {"Fn::Equals" : [ "${self:custom.stage}", "prod"]}
-  CreateResource: {"Fn::Or": [{"Condition": "EnvStaging"}, {"Condition": "EnvProd" }]}
-
 Resources:
   AwsAlertsAlarm:
     Type: "AWS::SNS::Topic"
     Properties:
       TopicName: ${self:service}-${self:custom.stage}-alerts-alarm
-  
-  SubscriptionEmail:
-    Type: "AWS::SNS::Subscription"
-    Condition: CreateResource
-    Properties:
-      Endpoint: my@email.com
-      Protocol: email
-      TopicArn: { "Ref" : "AwsAlertsAlarm" }
 
-  AlarmError500:
-    Type: "AWS::CloudWatch::Alarm"
-    Condition: CreateResource
-    Properties:
-      ActionsEnabled: "True"
-      AlarmName: "${self:custom.stage}-${self:service}-ApiGateway-5XXError"
-      AlarmDescription: "${self:custom.stage}-${self:service} ApiGateway 5XXError - ERROR"
-      AlarmActions:
-        - Ref: AwsAlertsAlarm
-      OKActions:
-        - Ref: AwsAlertsAlarm
-      ComparisonOperator: GreaterThanOrEqualToThreshold
-      Dimensions:
-        - Name: "ApiName"
-          Value: "${self:custom.stage}-${self:service}"
-        - Name: "Stage"
-          Value: "${self:custom.stage}"
-        - Name: "RootResourceId"
-          Value: { "Fn::GetAtt" : [ "ApiGatewayRestApi", "RootResourceId" ]}
-      EvaluationPeriods: 1
-      MetricName: 5XXError
-      Namespace: "AWS/ApiGateway"
-      Period: 60
-      Statistic: Sum
-      Threshold: 2
-      TreatMissingData: notBreaching
+  # SubscriptionEmail:
+  #   Type: "AWS::SNS::Subscription"
+  #   Condition: CreateResource
+  #   Properties:
+  #     Endpoint: alerts+aws@upacaipalmas.com
+  #     Protocol: email
+  #     TopicArn: { "Ref" : "AwsAlertsAlarm" }
+
+  # AlarmError500:
+  #   Type: "AWS::CloudWatch::Alarm"
+  #   Condition: CreateResource
+  #   Properties:
+  #     ActionsEnabled: "True"
+  #     AlarmName: "${self:custom.stage}-${self:service}-ApiGateway-5XXError"
+  #     AlarmDescription: "${self:custom.stage}-${self:service} ApiGateway 5XXError - ERROR"
+  #     AlarmActions:
+  #       - Ref: AwsAlertsAlarm
+  #     OKActions:
+  #       - Ref: AwsAlertsAlarm
+  #     ComparisonOperator: GreaterThanOrEqualToThreshold
+  #     Dimensions:
+  #       - Name: "ApiName"
+  #         Value: "${self:custom.stage}-${self:service}"
+  #       - Name: "Stage"
+  #         Value: "${self:custom.stage}"
+  #       - Name: "RootResourceId"
+  #         Value: { "Fn::GetAtt" : [ "ApiGatewayRestApi", "RootResourceId" ]}
+  #     EvaluationPeriods: 1
+  #     MetricName: 5XXError
+  #     Namespace: "AWS/ApiGateway"
+  #     Period: 60
+  #     Statistic: Sum
+  #     Threshold: 2
+  #     TreatMissingData: notBreaching
       
-  AlarmErro400:
-    Type: "AWS::CloudWatch::Alarm"
-    Condition: CreateResource
-    Properties:
-      ActionsEnabled: "True"
-      AlarmName: "${self:custom.stage}-${self:service}-ApiGateway-4XXError"
-      AlarmDescription: "Erro status code 4XX no ApiGateway ${self:custom.stage}-${self:service}"
-      AlarmActions:
-        - Ref: AwsAlertsAlarm
-      OKActions:
-        - Ref: AwsAlertsAlarm
-      ComparisonOperator: GreaterThanOrEqualToThreshold
-      Dimensions:
-        - Name: "ApiName"
-          Value: "${self:custom.stage}-${self:service}"
-        - Name: "Stage"
-          Value: "${self:custom.stage}"
-        - Name: "RootResourceId"
-          Value: { "Fn::GetAtt" : [ "ApiGatewayRestApi", "RootResourceId" ]}
-      EvaluationPeriods: 1
-      MetricName: 4XXError
-      Namespace: "AWS/ApiGateway"
-      Period: 300
-      Statistic: Sum
-      Threshold: 2
-      TreatMissingData: notBreaching
+  # AlarmErro400:
+  #   Type: "AWS::CloudWatch::Alarm"
+  #   Condition: CreateResource
+  #   Properties:
+  #     ActionsEnabled: "True"
+  #     AlarmName: "${self:custom.stage}-${self:service}-ApiGateway-4XXError"
+  #     AlarmDescription: "Erro status code 4XX no ApiGateway ${self:custom.stage}-${self:service}"
+  #     AlarmActions:
+  #       - Ref: AwsAlertsAlarm
+  #     OKActions:
+  #       - Ref: AwsAlertsAlarm
+  #     ComparisonOperator: GreaterThanOrEqualToThreshold
+  #     Dimensions:
+  #       - Name: "ApiName"
+  #         Value: "${self:custom.stage}-${self:service}"
+  #       - Name: "Stage"
+  #         Value: "${self:custom.stage}"
+  #       - Name: "RootResourceId"
+  #         Value: { "Fn::GetAtt" : [ "ApiGatewayRestApi", "RootResourceId" ]}
+  #     EvaluationPeriods: 1
+  #     MetricName: 4XXError
+  #     Namespace: "AWS/ApiGateway"
+  #     Period: 300
+  #     Statistic: Sum
+  #     Threshold: 2
+  #     TreatMissingData: notBreaching

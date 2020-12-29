@@ -1,9 +1,34 @@
-service: my-service
+service: hello-service
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  stackTags:
+    version: 1.0.0
+    service: ${self:service}-${self:custom.stage}
+  region: us-east-1
+  deploymentBucket: fitup-serverless-deployment-${self:provider.region}
+  logRetentionInDays: 1
+  tracing:
+    lambda: true
+    apiGateway: true
+  logs:
+    restApi: true
+  apiKeys:
+    - ${self:service}-${self:custom.stage}
+  apiGateway:
+    shouldStartNameWithService: true
 
 custom: ${file(config/custom.yml)}
-provider: ${file(config/provider.yml)}
-resources: ${file(config/cf-resources.yml)}
-functions: ${file(functions/mapping.js)}
+
+resources: 
+  - ${file(config/conditions.yml)}
+  - ${file(config/cf-resources.yml)}
+
+functions:
+  - ${file(functions/hello-world.yml)}
 
 plugins:
   - serverless-iam-roles-per-function

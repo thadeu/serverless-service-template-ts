@@ -1,5 +1,0 @@
-vpc:
-  securityGroupIds: 
-   # or ${self:custom.vpc.securityGroupIds.${self:custom.stage}}
-  subnetIds: 
-    # example - { "Fn::ImportValue" : "${self:custom.vpc.id.${self:custom.stage}}-PrivateSubnet1AID" }

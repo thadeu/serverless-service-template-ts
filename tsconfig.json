@@ -1,4 +1,5 @@
 {
+  // "extends": "../../tsconfig.paths.json",
   "compilerOptions": {
     "esModuleInterop": true,
     "preserveConstEnums": true,
@@ -10,7 +11,7 @@
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib": ["es2015"],
+    "lib": ["es2015", "dom"],
     "outDir": ".build",
     "rootDir": "./"
   },
