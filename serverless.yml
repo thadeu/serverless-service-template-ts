@@ -1,0 +1,21 @@
+service: my-service
+
+custom: ${file(config/custom.yml)}
+provider: ${file(config/provider.yml)}
+resources: ${file(config/cf-resources.yml)}
+functions: ${file(functions/mapping.js)}
+
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-plugin-aws-alerts
+  - serverless-plugin-lambda-dead-letter
+  - serverless-domain-manager
+  - serverless-aws-documentation
+  - serverless-apigateway-service-proxy
+  - serverless-webpack
+
+package:
+  individually: true
+  exclude:
+    - test/**
+    - buildspec.yml

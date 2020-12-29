@@ -1,0 +1,16 @@
+name: aws
+runtime: nodejs12.x
+stage: dev
+stackTags:
+  version: 1.0.0
+  service: ${self:service}-${self:custom.stage}
+region: us-east-1
+deploymentBucket: serverless-deployment-${self:provider.region}
+logRetentionInDays: 1
+tracing:
+  lambda: true
+  apiGateway: true
+logs:
+  restApi: true
+apiKeys:
+  - ${self:service}-${self:custom.stage}

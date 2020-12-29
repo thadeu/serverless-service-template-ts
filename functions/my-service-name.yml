@@ -1,0 +1,43 @@
+my-service-name:
+  handler: src/my-service-name/handler.handler
+  description: DESCRIPTION YOUR TEMPLATE
+  memorySize: 128
+  timeout: 60
+  tracing: true
+  events:
+    - http:
+        path: PATH
+        method: METHOD
+        private: true
+        cors:
+          allowCredentials: false
+          origin: '*'
+          headers:
+            - '*'
+        
+  alarms:
+    - functionDuration
+    - name: functionDuration
+      description: ${self:service}-${self:custom.stage}-my-service-name Lambda Timeout - WARNING
+      threshold: 60000
+    - functionErrors
+    - name: functionErrors 
+      description: ${self:service}-${self:custom.stage}-my-service-name Lambda Error - ERROR
+    - functionThrottles
+    - name: functionThrottles 
+      description: ${self:service}-${self:custom.stage}-my-service-name Lambda Throttle - ERROR
+
+  iamRoleStatements:
+    - $(file(../config/roles_statements/xray.yml))
+    - $(file(../config/roles_statements/secretmanager.yml))
+    - $(file(../config/roles_statements/dynamo.yml))
+
+    # Others IAM Roles
+    - Effect: "Allow"
+      Action:
+        - es:ESHttpGet
+        - es:ESHttpPost
+      Resource:
+        - { "Fn::Join" : ["", ["arn:aws:es:us-east-1:", 
+        { "Ref" : "AWS::AccountId" }, 
+        ":domain/${ssm:/${self:custom.stage}/${self:provider.region}/elasticsearch/domain}/*/_search" ] ]  }
