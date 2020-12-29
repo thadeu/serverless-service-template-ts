@@ -1,0 +1,53 @@
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "description": "Node.Js example",
+  "main": "handler.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive",
+    "test:remote": "mkdir -p .build; . ./helpers/endpoint.sh; npm run test",
+    "clean": "rm -rf node_modules && rm -rf src/node_modules",
+    "deploy": "./node_modules/.bin/serverless deploy | tee .build/deploy.out",
+    "remove": "./node_modules/.bin/serverless remove | tee .build/remove.out",
+    "predeploy": "mkdir -p .build",
+    "predeploy:cicd": "npm run predeploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/nodejs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-xray-sdk-core": "^2.0.0",
+    "axios": "^0.20.0",
+    "dotenv": "^6.0.0"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^2.16.0",
+    "@types/aws-lambda": "^8.10.64",
+    "@types/node": "^14.14.6",
+    "aws-sdk": "^2.203.0",
+    "aws-sdk-mock": "^1.7.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1",
+    "lodash": "^4.17.20",
+    "serverless": "^1.26.1",
+    "serverless-plugin-aws-alerts": "^1.2.4",
+    "serverless-iam-roles-per-function": "^2.0.1",
+    "serverless-apigateway-service-proxy": "^1.12.0",
+    "serverless-aws-documentation": "^1.0.1",
+    "serverless-domain-manager": "^3.3.1",
+    "serverless-plugin-lambda-dead-letter": "^1.2.1",
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-webpack": "^5.3.2",
+    "js-yaml": "^3.14.0",
+    "sinon": "^7.1.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "ts-loader": "^8.0.11",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2",
+    "webpack": "^4.43.0",
+    "webpack-node-externals": "^2.5.2"
+  }
+}
